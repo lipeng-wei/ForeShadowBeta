@@ -14,6 +14,7 @@ define('TMP_PATH', APP_PATH. 'tmp/');
 define('DATA_PATH', APP_PATH. 'data/');
 define('MODEL_PATH', APP_PATH. 'model/');
 define('SCRIPT_PATH', APP_PATH. 'script/');
+define('OUTPUT_PATH', APP_PATH. 'output/');
 
 
 require_once(LIB_PATH . "Util.php");
