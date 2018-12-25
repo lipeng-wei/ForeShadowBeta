@@ -1,0 +1,6 @@
+.idea/
+/.project
+conf/app.ini
+conf/nginx.conf
+logs/*
+lock/*
