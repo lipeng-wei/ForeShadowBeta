@@ -67,18 +67,4 @@ class Refer
         return false;
     }
 
-
-
-
-
-    //内部使用 从文件中读取索引
-    public static function _getRefer($file){
-
-        $refer = array();
-        if (! file_exists($file))return $refer;
-        $refer = parent::getAllData($file);
-        return $refer;
-    }
-
-
 }
