@@ -15,6 +15,8 @@ if ($argc > 0 && basename($argv[0]) == 'task.dc.report.grow.php') {
     Log::info(basename($argv[0]) . ' 开始运行');
 
     DCGrow::run();
+
+    Log::info(basename($argv[0]) . ' 运行结束');
 }
 
 class DCGrow

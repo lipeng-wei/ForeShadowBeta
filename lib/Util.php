@@ -47,11 +47,13 @@ class Util
             return false;
     }
 
-    public static function getSleepTime($idx) {
-        static $sleep_arr = array(0, 0, 0, 1, 1, 2, 2,
-            10, 1, 1, 1, 2, 2, 30, 1, 1, 1, 2, 2,
-            60, 1, 1, 1, 2, 2, 200, 1, 1, 1, 2, 2,
-            400, 1, 1, 1, 2, 2, 2, -1, -1, -1);
+    public static function getSleepTime() {
+        static $idx = -1;
+        $idx++;
+        static $sleep_arr = array(0, 1, 2, 3, 4, 5,
+            10, 1, 2, 3, 4, 5, 20, 1, 2, 3, 4, 5,
+            30, 1, 2, 3, 4, 5, -1, -1, -1);
+        if ($sleep_arr[$idx] == -1) $idx = 0;
         return $sleep_arr[$idx];
     }
 

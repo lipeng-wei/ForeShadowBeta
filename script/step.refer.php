@@ -146,8 +146,8 @@ class ReferStep
     }
 
     public static function fetchSinglePage($url, $host=null, $referer=null, $cookieFile=null){
-        $sleep_idx = -1;
-        while (1){
+        $limit = 28;
+        while ($limit-- < 0) {
             $ret = self::curlSinglePage($url, $host, $referer, $cookieFile);
             if ( $ret ){
 
@@ -166,10 +166,9 @@ class ReferStep
                 }
 
             }
-            $sleep_idx ++;
-            if (Util::getSleepTime($sleep_idx) == -1) $sleep_idx = 0;
-            Log::easyDebug("sleep " . Util::getSleepTime($sleep_idx). "s then retry");
-            sleep(Util::getSleepTime($sleep_idx));
+            $sleep_time = Util::getSleepTime();
+            Log::easyDebug("sleep " . $sleep_time. "s then retry");
+            sleep($sleep_time);
         }
         return false;
     }

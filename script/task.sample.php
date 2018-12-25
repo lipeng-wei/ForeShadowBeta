@@ -14,4 +14,6 @@ if ($argc > 0 && basename($argv[0]) == 'task.sample.php') {
     }
     Log::info(basename($argv[0]) . ' 开始运行');
     // TO-DO
+
+    Log::info(basename($argv[0]) . ' 运行结束');
 }
