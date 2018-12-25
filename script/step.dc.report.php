@@ -33,7 +33,7 @@ class DCReportStep
     public static function updateReport()
     {
         $cookie = TmpFile::genByName('step.dc.report.cookie');
-
+        $cookie->renew(false);
         //访问data.eastmoney.com 生成cookie
         $url = 'http://data.eastmoney.com/report/';
         $ret = self::curlSinglePage($url, 'data.eastmoney.com', 'www.baidu.com',
