@@ -101,7 +101,7 @@ class DCReportStep
         }else {
             Log::easyError("Parse DCReport Failed");
         }
-        $timeFile->bak();
+        $timeFile->renew();
         $timeFile->put($thisTime);
         Log::easyInfo("Finish Update DCReport");
 

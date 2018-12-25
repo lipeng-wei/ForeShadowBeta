@@ -40,12 +40,16 @@ class TmpFile
         return $file;
     }
 
-    public function bak()
+    public function renew($bak=true)
     {
         if (file_exists($this->_file)) {
-            $l = filemtime($this->_file);
-            $l = date("YmdHis", $l);
-            @rename($this->_file, $this->_file . '.' . $l);
+            if ($bak === true) {
+                $l = filemtime($this->_file);
+                $l = date("YmdHis", $l);
+                @rename($this->_file, $this->_file . '.' . $l);
+            } else {
+                @unlink($this->_file);
+            }
         }
     }
 
