@@ -91,7 +91,7 @@ class Log
             $msg = substr($msg, 0 , 4096) . '....to long';
         }*/
         $logmsg  = '['.date( 'Y-m-d H:i:s' ).' '.Util::getClientIP().'] ';
-        $logmsg .= '['.$logInfo['host'].'] ';
+        //$logmsg .= '['.$logInfo['host'].'] ';
         $logmsg .= '['.$logInfo['func'].'] [LINE:'.$logInfo['line'].'] [' . self::$_log_index . '] '.$msg."\n";
         if( is_resource($this->_fp) )
             fwrite( $this->_fp, $logmsg );

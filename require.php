@@ -2,8 +2,8 @@
 
 ini_set('display_errors', false);
 //error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
-//error_reporting(E_ERROR);
-error_reporting(E_ALL);
+error_reporting(E_ERROR);
+//error_reporting(E_ALL);
 
 
 define('APP_PATH', dirname(__FILE__). '/');

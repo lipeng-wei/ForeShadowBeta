@@ -5,7 +5,7 @@
  */
 
 if ($argc > 0 && basename($argv[0]) == 'tmp.sample.php') {
-    require_once(dirname(__FILE__). '/../Require.php');
+    require_once(dirname(__FILE__). '/../require.php');
     // 同一时间同一机器不允许执行多个
     $file = fopen(__FILE__, "a");
     if (! flock($file, LOCK_EX | LOCK_NB)) {

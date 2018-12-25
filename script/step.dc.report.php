@@ -10,7 +10,7 @@
 ini_set('memory_limit', '800M');
 
 if ($argc > 0 && basename($argv[0]) == 'step.dc.report.php') {
-    require_once(dirname(__FILE__). '/../Require.php');
+    require_once(dirname(__FILE__). '/../require.php');
     // 同一时间同一机器不允许执行多个
     $file = fopen(__FILE__, "a");
     if (! flock($file, LOCK_EX | LOCK_NB)) {
@@ -55,7 +55,7 @@ class DCReportStep
         $thisTime = date("Y-m-d", strtotime('-1 day'));
 
         $page = 0;
-        $limit = 2;
+        $limit = 8000;
         $list = array();
         while($page < $limit) {
 
