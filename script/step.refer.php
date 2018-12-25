@@ -129,6 +129,13 @@ class ReferStep
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);//设置返回数据
 
+        //用来告诉 PHP 在成功连接服务器前等待多久（连接成功之后就会开始缓冲输出）
+        //这个参数是为了应对目标服务器的过载，下线，或者崩溃等可能状况。
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 8);
+        //用来告诉成功 PHP 从服务器接收缓冲完成前需要等待多长时间，
+        //如果目标是个巨大的文件，生成内容速度过慢或者链路速度过慢，这个参数就会很有用。
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+
         if ($cookieFile) {
             curl_setopt($ch, CURLOPT_COOKIEJAR, $cookieFile); //保存
             curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile); //读取
