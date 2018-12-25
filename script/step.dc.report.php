@@ -32,7 +32,7 @@ class DCReportStep
 
     public static function updateReport()
     {
-        $cookie = TmpFile::getIns('step.dc.report.cookie');
+        $cookie = TmpFile::genByName('step.dc.report.cookie');
 
         //访问data.eastmoney.com 生成cookie
         $url = 'http://data.eastmoney.com/report/';
@@ -43,7 +43,7 @@ class DCReportStep
         Log::easyInfo('Begin Update report');
 
         //校验上次更新时间
-        $timeFile = TmpFile::getIns('step.dc.report.time');
+        $timeFile = TmpFile::genByName('step.dc.report.time');
         $lastTime = $timeFile->get();
         $pattern = "/[0-9]{4}-[0-9]{2}-[0-9]{2}/";
         preg_match($pattern, $lastTime, $k);

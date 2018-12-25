@@ -1,35 +1,43 @@
 <?php
 /**
  * 临时文件
- *
- *
  */
 
 class TmpFile
 {
-    private $_name = null;
     private $_file = '';
     private static $_box = array();
 
 
-    private function __construct($name)
-    {
-        $this->_name = $name;
-        $this->_file = TMP_PATH . $name;
-    }
+    private function __construct()
+    { }
 
     /**
      * 获取临时文件对象
      */
-    static public function getIns( $name )
+    static public function genByName( $name )
     {
-
-        if ( array_key_exists( $name, self::$_box ) )
+        $filename = TMP_PATH . $name;
+        if ( array_key_exists( $filename, self::$_box ) )
         {
-            return self::$_box[$name];
+            return self::$_box[$filename];
         }
-        self::$_box[$name] = new TmpFile($name);
-        return self::$_box[$name];
+        $file = new TmpFile();
+        $file->_file = $filename;
+        self::$_box[$filename] = $file;
+        return $file;
+    }
+    static public function genByFilePath( $filePath )
+    {
+        if ( array_key_exists( $filePath, self::$_box ) )
+        {
+            return self::$_box[$filePath];
+        }
+        $file = new TmpFile();
+        $file->_file = $filePath;
+        self::$_box[$filePath] = $file;
+
+        return $file;
     }
 
     public function bak()
@@ -37,7 +45,7 @@ class TmpFile
         if (file_exists($this->_file)) {
             $l = filemtime($this->_file);
             $l = date("YmdHis", $l);
-            @rename($this->_file, TMP_PATH . $this->_name . '.' . $l);
+            @rename($this->_file, $this->_file . '.' . $l);
         }
     }
 

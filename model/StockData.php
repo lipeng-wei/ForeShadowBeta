@@ -7,8 +7,6 @@ require_once(LIB_PATH . "TableFileTool.php");
 class StockData
 {
 
-    //索引
-    const T_INDEX = 'index';
     //日线
     const T_DAY = 'day';
     //东财研报
@@ -18,10 +16,6 @@ class StockData
 
 
     public static $TYPE_CONF = [
-        self::T_INDEX => [
-            'PATH' => 'index',
-            'NAME' => '索引'
-        ],
         self::T_DAY => [
             'PATH' => 'day',
             'NAME' => '日线'
