@@ -1,7 +1,8 @@
 <?php
 /**
- * Stock时序 的数据模型
+ * Stock时序(time) 的数据模型
  */
+require_once(LIB_PATH . "TableFileTool.php");
 
 class StockData
 {
@@ -69,23 +70,50 @@ class StockData
     /*
      * 读取文件 准备数据
      */
-    protected function _prepare(){
+    protected function _prepare()
+    {
         if ($this->_data) return true;
-        $this->_data = TableFile::get($this->_filename);
+        $this->_data = TableFileTool::get($this->_filename);
         return true;
     }
 
     /**
      * 获取完整数据
      */
-    public function getAll(){
+    public function getAll()
+    {
         return $this->_prepare();
+    }
+
+    /**
+     * 放入完整数据
+     */
+    public function putAll($data)
+    {
+        $list = [];
+        foreach($data as $item) {
+            if ($item['time'])  $list[] = $item;
+        }
+        return TableFileTool::put($this->_filename, $list);
+    }
+
+    /**
+     * 追加部分数据
+     */
+    public function appendSome($data)
+    {
+        $list = [];
+        foreach($data as $item) {
+            if ($item['time'])  $list[] = $item;
+        }
+        return TableFileTool::append($this->_filename, $list);
     }
 
     /**
      * 获取数据存储文件路径
      */
-    public function getFileName(){
+    public function getFileName()
+    {
         return $this->_filename;
     }
 
@@ -93,7 +121,8 @@ class StockData
      * 二分查找日期索引
      * [ 日期日存在 true，日期的索引值 ] / [ 日期不存在 false，离日期最近的索引值 ]
      */
-    protected function _locateDayIndex($day){
+    protected function _locateDayIndex($day)
+    {
         $s = 0;
         $e = sizeof($this->_data);
         while ($s + 1 < $e) {
@@ -113,7 +142,8 @@ class StockData
      * 获取某一天的数据
      * @param $day string 为 日期 例如 2015-11-06
      */
-    public function getDaySolo($day){
+    public function getDaySolo($day)
+    {
         $this->_prepare();
 
         $d = $this->_locateDayIndex($day);
@@ -124,7 +154,8 @@ class StockData
      * 获取最新某天数据
      * $pos  为 离最新的周期数 0：最新一个周期（最新一天）
      */
-    function getLastSolo($pos){
+    function getLastSolo($pos)
+    {
         $this->_prepare();
 
         return sizeof($this->_data) > $pos ?
@@ -139,7 +170,8 @@ class StockData
      * @param int $min 为 要求最短周期数
      * @return array|bool
      */
-    function getDayPeriod($start, $end, $min = 1){
+    function getDayPeriod($start, $end, $min = 1)
+    {
         $this->_prepare();
 
         $s = $start === true ? 0 : $this->_locateDayIndex($start)[1];
@@ -154,7 +186,8 @@ class StockData
      * @param int $min 为 要求最短周期数
      * @return array|bool
      */
-    function getLastPeriod($pos, $num, $min = 1){
+    function getLastPeriod($pos, $num, $min = 1)
+    {
         $this->_prepare();
 
         $s = $pos === true ? 0 : sizeof($this->_data)- $pos - 1;

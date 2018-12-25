@@ -16,15 +16,12 @@ define('MODEL_PATH', APP_PATH. 'model/');
 define('SCRIPT_PATH', APP_PATH. 'script/');
 
 
-
 require_once(LIB_PATH . "Util.php");
 require_once(LIB_PATH . "Helper.php");
 require_once(LIB_PATH . "Container.php");
-
-
+require_once(LIB_PATH . "TmpFile.php");
 
 Container::register('__request_uniqid__', uniqid());
-
 
 
 require_once(LIB_PATH . "Config.php");
@@ -53,6 +50,8 @@ set_exception_handler(function ($exception) {
         return false;
     }
 );
+
+require_once(MODEL_PATH . "StockData.php");
 
 
 

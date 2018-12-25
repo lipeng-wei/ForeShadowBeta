@@ -9,7 +9,7 @@
  *
  */
 
-class TableFile
+class TableFileTool
 {
 
     /**
