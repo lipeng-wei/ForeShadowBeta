@@ -1,2 +1,2 @@
 # ForeShadowBeta
-ForeShadow Beta
+Stock Quantitative Analysis Platform (Beta)
