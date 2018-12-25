@@ -82,7 +82,8 @@ class StockData
      */
     public function getAll()
     {
-        return $this->_prepare();
+        $this->_prepare();
+        return $this->_data;
     }
 
     /**
