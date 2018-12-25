@@ -188,7 +188,6 @@ class DCReportStep
             curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile); //读取
         }
 
-
         //curl_setopt($ch, CURLOPT_HEADER, false);
         curl_setopt($ch, CURLOPT_HTTPHEADER,$header);
 
@@ -200,20 +199,17 @@ class DCReportStep
     }
 
     public static function fetchSinglePage($url, $host=null, $referer=null, $cookieFile=null) {
-        $limit = 28;
-        while ($limit-- < 0) {
+        $retry = 18;
+        while ($retry-- < 0) {
             $ret = self::curlSinglePage($url, $host, $referer, $cookieFile);
             if ( $ret ){
-
                 $t = strpos($ret, '=');
                 $content = substr($ret, $t + 1);
                 $json = json_decode($content, true);
+                Util::successSleep();
                 if ($json) return $json;
-
             }
-            $sleep_time = Util::getSleepTime();
-            Log::easyDebug("sleep " . $sleep_time. "s then retry");
-            sleep($sleep_time);
+            Util::failedSleep();
         }
         return false;
     }

@@ -141,7 +141,6 @@ class ReferStep
             curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile); //读取
         }
 
-
         //curl_setopt($ch, CURLOPT_HEADER, false);
         curl_setopt($ch, CURLOPT_HTTPHEADER,$header);
 
@@ -153,11 +152,10 @@ class ReferStep
     }
 
     public static function fetchSinglePage($url, $host=null, $referer=null, $cookieFile=null){
-        $limit = 28;
-        while ($limit-- < 0) {
+        $retry = 18;
+        while ($retry-- < 0) {
             $ret = self::curlSinglePage($url, $host, $referer, $cookieFile);
             if ( $ret ){
-
                 $pattern = "/\[.*\]/";
                 preg_match($pattern, $ret, $k);
                 $content = '{"data":'.$k[0].'}';
@@ -169,13 +167,11 @@ class ReferStep
                     $j = explode(':', $k[0]);
                     $json['total'] = intval($j[1]);
                     //Log::easyDebug($content);
+                    Util::successSleep();
                     return $json;
                 }
-
             }
-            $sleep_time = Util::getSleepTime();
-            Log::easyDebug("sleep " . $sleep_time. "s then retry");
-            sleep($sleep_time);
+            Util::failedSleep();
         }
         return false;
     }

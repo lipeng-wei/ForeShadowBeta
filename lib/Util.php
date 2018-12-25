@@ -25,7 +25,8 @@ class Util
         return $ip;
     }
 
-    public static function code2Num($code){
+    public static function code2Num($code)
+    {
         $s = substr($code, 0 ,2);
         $s = strtolower($s);
         if ($s == 'sh' || $s == 'sz')
@@ -34,7 +35,8 @@ class Util
             return false;
     }
 
-    public static function num2Code($num){
+    public static function num2Code($num)
+    {
         if (strlen($num) != 6 ) return false;
         $s = substr($num, 0 ,1);
         if ($s == '6')
@@ -47,14 +49,30 @@ class Util
             return false;
     }
 
-    public static function getSleepTime() {
-        static $idx = -1;
-        $idx++;
-        static $sleep_arr = array(0, 1, 2, 3, 4, 5,
-            10, 1, 2, 3, 4, 5, 20, 1, 2, 3, 4, 5,
-            30, 1, 2, 3, 4, 5, -1, -1, -1);
-        if ($sleep_arr[$idx] == -1) $idx = 0;
-        return $sleep_arr[$idx];
+    private static $sleep_idx = -1;
+    private static $sleep_arr = array(0, 0, 1, 1, 5,
+        1, 1, 3, 20, 3, 3, 5, 60, 10, 5, 3, -1, -1, -1);
+    public static function successSleep()
+    {
+        if (self::$sleep_idx > 8) self::$sleep_idx = -1;
+        $i = rand(1, 100);
+        if ($i<60) return true;
+        if ($i<90) {
+            sleep(2);
+            return true;
+        }
+        sleep(5);
+        return true;
+    }
+    public static function failedSleep()
+    {
+        self::$sleep_idx++;
+        $t = self::$sleep_arr[self::$sleep_idx];
+        if ($t == -1) self::$sleep_idx = 0;
+        $t = self::$sleep_arr[self::$sleep_idx];
+        Log::easyDebug("sleep " . $t. "s then retry");
+        sleep($t);
+        return true;
     }
 
 }
