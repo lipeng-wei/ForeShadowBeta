@@ -171,14 +171,14 @@ class XQKtStep
 
     public static function fetchSinglePage($url, $host=null, $referer=null)
     {
-        $retry = 5;
+        $retry = 8;
         while ($retry-- > 0) {
             $ret = self::curlSinglePage($url, $host, $referer);
 
             if ( $ret ){
                 $json = json_decode($ret, true);
                 if ($json['error_code'] > 0) {
-                    Util::successSleep();
+                    sleep(30);
                     self::refreshCookie();
                 }
                 if ($json && $json['data'] && $json['data']['item'] && $json['data']['item'][0]
