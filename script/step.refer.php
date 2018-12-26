@@ -64,7 +64,7 @@ class ReferStep
             Log::easyDebug('Get page', $t_page);
             Log::easyDebug('Get Url', $url);
             $ret = self::fetchSinglePage($url, null, $re_url, $cookie->getFileName());
-            $updata = self::parseReport($ret);
+            $updata = self::parse($ret);
 
             $list = array_merge($updata, $list);
 
@@ -87,7 +87,7 @@ class ReferStep
         return true;
     }
 
-    public static function parseReport($json){
+    public static function parse($json){
 
         $ret = array();
         Container::set('total', $json['total']);

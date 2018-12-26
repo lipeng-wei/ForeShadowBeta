@@ -8,7 +8,7 @@ class StockData
 {
 
     //日线
-    const T_DAY = 'day';
+    const T_K_DAY = 'kday';
     //东财研报
     const T_DC_REPORT = 'dcreport';
     //东财公告
@@ -16,8 +16,8 @@ class StockData
 
 
     public static $TYPE_CONF = [
-        self::T_DAY => [
-            'PATH' => 'day',
+        self::T_K_DAY => [
+            'PATH' => 'kday',
             'NAME' => '日线'
         ],
         self::T_DC_REPORT => [
