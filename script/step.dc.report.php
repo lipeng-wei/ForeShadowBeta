@@ -200,14 +200,16 @@ class DCReportStep
 
     public static function fetchSinglePage($url, $host=null, $referer=null, $cookieFile=null) {
         $retry = 18;
-        while ($retry-- < 0) {
+        while ($retry-- > 0) {
             $ret = self::curlSinglePage($url, $host, $referer, $cookieFile);
             if ( $ret ){
                 $t = strpos($ret, '=');
                 $content = substr($ret, $t + 1);
                 $json = json_decode($content, true);
-                Util::successSleep();
-                if ($json) return $json;
+                if ($json) {
+                    Util::successSleep();
+                    return $json;
+                }
             }
             Util::failedSleep();
         }

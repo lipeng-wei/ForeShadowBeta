@@ -153,7 +153,7 @@ class ReferStep
 
     public static function fetchSinglePage($url, $host=null, $referer=null, $cookieFile=null){
         $retry = 18;
-        while ($retry-- < 0) {
+        while ($retry-- > 0) {
             $ret = self::curlSinglePage($url, $host, $referer, $cookieFile);
             if ( $ret ){
                 $pattern = "/\[.*\]/";
