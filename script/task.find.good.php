@@ -34,7 +34,8 @@ class FindGood
     /**
      * 查找：开始时间$start 结束时间$end 存在$n天内 最大涨幅超过$x(%)
      */
-    public static function calcRange($start, $end, $n, $x){
+    public static function calcRange($start, $end, $n, $x)
+    {
         $resultFile = OUTPUT_PATH. $end. '_'. $start. '_FindGood.html';
         $title_content = 'Find_Good 筛选 ('. $start. '~'. $end. ')';
         $caption_content = $start. '至'. $end. '日线Find_Good筛选结果';
