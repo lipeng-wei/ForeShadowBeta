@@ -22,15 +22,19 @@ if ($argc > 0 && basename($argv[0]) == 'task.dc.report.grow.php') {
 class DCGrow
 {
 
-    public static function run(){
+    public static function run()
+    {
 
         //self::filterReport('2018-11-30', '2018-05-09', '2017-12-01');
         self::filterReport('2019-01-06', '2018-11-30', '2017-12-01');
 
     }
 
-    //开始时间$start 结束时间$end
-    public static function filterReport($end, $start, $show){
+    /**
+     * 开始时间$start 结束时间$end 展现时间$show
+     */
+    public static function filterReport($end, $start, $show)
+    {
         $pattern = "/(不可限量|高景气|翻倍|翻番|加速|超预期|大幅增长|高速增长|高增长|爆发|迅猛增长|暴增|收获期|放量|快速增长|历史性|机遇期|大时代)/";
         $replacement = "<span class='sp'>$1</span>";
         $resultFile = OUTPUT_PATH. $end. '_'. $start. '_DCReport_Growth.html';
