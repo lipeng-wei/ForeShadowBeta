@@ -18,6 +18,7 @@ define('OUTPUT_PATH', APP_PATH. 'output/');
 
 
 require_once(LIB_PATH . "Util.php");
+require_once(LIB_PATH . "Logic.php");
 require_once(LIB_PATH . "Helper.php");
 require_once(LIB_PATH . "Container.php");
 require_once(LIB_PATH . "TmpFile.php");
