@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 定时任务 样例
+ * 在一段时间内找到 Good个股 并分析
  */
 
 if ($argc > 0 && basename($argv[0]) == 'task.find.good.php') {
