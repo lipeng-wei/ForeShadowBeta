@@ -25,6 +25,7 @@ class DCGrow
     public static function run(){
 
         //self::filterReport('2018-11-30', '2018-05-09', '2017-12-01');
+        self::filterReport('2019-01-06', '2018-11-30', '2017-12-01');
 
     }
 
@@ -82,23 +83,22 @@ class DCGrow
 
         $limiter = 5;
 
-        $stockList = Refer::getStock();
-        $stockData = array();
-        foreach($stockList as $stkL){
+        $stkL = Refer::getStock();
+        $stkD = array();
+        foreach($stkL as $stk){
 
             //if (--$limiter < 0 ) break;
 
             $stkBlock = array();
 
-            $rd = StockData::genByCodeType($stkL['code'], StockData::T_DC_REPORT);
+            $rd = StockData::genByCodeType($stk['code'], StockData::T_DC_REPORT);
             $rdd = $rd->getDayPeriod($show, $end);
             if (! $rdd) continue;
 
             $is_select = false;
             foreach ($rdd as $rddr) {
                 $stkRow = array();
-                $stkRow[] = $stkL['code'];
-                $stkRow[] = $stkL['name'];
+                $stkRow[] = $stk['code'].'_'.$stk['name'];
                 $stkRow[] = $rddr['time'];
                 $stkRow[] = $rddr['institute'];
                 if ($rddr['time'] >= $start && $rddr['time'] <= $end) {
@@ -114,16 +114,16 @@ class DCGrow
                 }
                 $stkRow[] = '<a target="_blank" href="' . $rddr['url']. '">打开</a>';
                 $stkRow[] = '<a target="_blank" href="http://stock.jrj.com.cn/share,'.
-                    Util::code2Num($stkL['code']).',stockyanbao.shtml">金融界</a>&nbsp;'.
+                    Util::code2Num(['code']).',stockyanbao.shtml">金融界</a>&nbsp;'.
                     '<a target="_blank" href="http://vip.stock.finance.sina.com.cn/q/go.php/vReport_List/kind/search/index.phtml?t1=2&symbol='.
-                    $stkL['code'].'">新浪</a>&nbsp;'.'<a target="_blank" href="http://yanbao.stock.hexun.com/yb_'.
-                    Util::code2Num($stkL['code']).'.shtml">和讯</a>&nbsp;'.
+                    $stk['code'].'">新浪</a>&nbsp;'.'<a target="_blank" href="http://yanbao.stock.hexun.com/yb_'.
+                    Util::code2Num($stk['code']).'.shtml">和讯</a>&nbsp;'.
                     '<a target="_blank" href="http://www.iwencai.com/search?typed=0&preParams=&ts=1&f=1&qs=result_tab&tid=report&w='.
-                    $stkL['name'].'">i问财</a>';
+                    $stk['name'].'">i问财</a>';
                 array_unshift($stkBlock, $stkRow);
             }
             if ($is_select) {
-                $stockData = array_merge($stockData, $stkBlock);
+                $stkD = array_merge($stkD, $stkBlock);
             }
 
         }
@@ -131,17 +131,17 @@ class DCGrow
         $i = 0;
         $l_code = '';
         $table_content = '';
-        foreach($stockData as $stockRow) {
-            if ($stockRow['0'] != $l_code) {
+        foreach($stkD as $stkR) {
+            if ($stkR['0'] != $l_code) {
                 $i = ($i + 1) % 4;
-                $l_code = $stockRow['0'];
+                $l_code = $stkR['0'];
             }
-            if ($stockRow[2]  >= $start) {
+            if ($stkR[2]  >= $start) {
                 $table_content .= '<tr class="tr_'. $i. '">';
             } else {
                 $table_content .= '<tr class="tr_tr">';
             }
-            foreach ($stockRow as $item) {
+            foreach ($stkR as $item) {
                 $table_content .= '<td>'. $item. '</td>';
             }
             $table_content .= '</'. 'tr>';
