@@ -24,7 +24,8 @@ class V2P
     public static function run()
     {
 
-        self::calcV2P('2018-12-05', '2019-01-05');
+        //self::calcV2P('2018-12-05', '2019-01-05');
+        self::calcV2P('2020-05-01', '2020-06-01');
 
     }
 
