@@ -13,6 +13,8 @@ class StockData
     const T_DC_REPORT = 'dcreport';
     //东财公告
     const T_DC_PUBLIC = 'dcpublic';
+    //爱查股DDE
+    const T_ACG_DDE = 'acgdde';
 
 
     public static $TYPE_CONF = [
@@ -27,6 +29,10 @@ class StockData
         self::T_DC_PUBLIC => [
             'PATH' => 'dcpublic',
             'NAME' => '东财公告'
+        ],
+        self::T_ACG_DDE => [
+            'PATH' => 'acgdde',
+            'NAME' => '爱查股DDE'
         ],
     ];
 
