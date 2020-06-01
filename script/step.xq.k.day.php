@@ -81,6 +81,8 @@ class XQKtStep
             log::easyError('Parse Failed', $code, $name);
             return false;
         }
+        //var_dump($data);
+        //exit(0);
         $kd->putAll($data);
         Log::easyInfo("Update", $code, $name, "Success");
         return true;
