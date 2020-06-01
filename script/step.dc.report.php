@@ -53,7 +53,9 @@ class DCReportStep
             Log::easyError("Get LastTime Failed");
             return 0;
         }
+        Log::easyInfo('Get Get LastTime', $lastTime);
         $thisTime = date("Y-m-d", strtotime('-1 day'));
+
 
         $page = 0;
         $limit = 8000;
@@ -74,10 +76,11 @@ class DCReportStep
             $ret = self::fetchSinglePage($url, 'datainterface.eastmoney.com', 'http://data.eastmoney.com/report/',
                 $cookie->getFileName());
             $updata = self::parseReport($ret['data']);
-
+            Log::easyDebug('Get data', $updata);
             if ($updata) {
                 $list = array_merge($updata, $list);
             }
+            Log::easyDebug($list[0][1]['time'], $lastTime);
             if ($list[0][1]['time'] <= $lastTime) break;
         }
         if ($list) {
