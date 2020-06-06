@@ -25,7 +25,8 @@ class DDE
     {
 
         //self::calcDDE('2018-12-05', '2019-01-05');
-        self::calcDDE('2020-05-15', '2020-06-01');
+        //self::calcDDE('2020-05-15', '2020-06-01');
+        self::calcDDE('2020-05-23', '2020-06-01');
 
     }
 
@@ -121,7 +122,8 @@ class DDE
         }
 
         array_multisort(array_column($tmp,'DDE_per'), SORT_DESC, $tmp);
-        $stkD = array_slice($tmp, 0, 100);
+        //$stkD = array_slice($tmp, 0, 100);
+        $stkD = $tmp;
 
         $i = 0;
         $table_content = '';
