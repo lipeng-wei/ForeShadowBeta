@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="Keywords" content="Stock Simple 简化操作工具" />
+	<meta name="Description" content="StockFilter升级版" />
+
+	<title>Stock Simple -- Lipeng_wei</title>
+	<style type="text/css">
+
+ *{
+	padding: 0;
+	margin:0;
+	box-sizing: border-box;
+	font-family: "微软雅黑";
+}
+
+body{
+	padding: 20px;
+	font-size: 12px;
+}
+.main-body{
+	width: 1000px;
+	height: 600px;
+	margin:0 auto;
+}
+.w100{
+	width: 100%;
+}
+.w70{
+	width: 70%;
+}
+.w30{
+ width: 30%;
+}
+.w20{
+	width: 20%;
+}
+.filter-div, .exclude-div{
+	float: left;	
+	width: auto;	
+	height: 100%;
+	font-size: 28px;
+	padding: 0 8px;
+	border-radius: 5px;
+	border:0;
+	background: #18f;
+	color: #fff;
+	cursor: pointer;
+	text-align: center;
+	display: flex;
+    align-items: center;
+}
+.textarea{
+	float: left;
+	height: 100%;
+	border: 1px solid #e0e0e0;
+	border-radius: 5px;
+	padding: 10px;
+	font-size: 14px;
+}
+
+	</style> 
+	<script src="https://cdn.staticfile.org/jquery/1.11.3/jquery.min.js"></script>
+</head>
+<body>
+	<div class="main-body">
+		<textarea name="input-content" id="input-content" class="textarea w30" placeholder="输入内容"></textarea>
+		<div class="exclude-div">-</div>
+		<textarea name="exclude-content" id="exclude-content" class="textarea w30" placeholder="排除内容"></textarea>
+		<div class="filter-div">></div>
+		<textarea name="output-content" id="output-content" class="textarea w30" placeholder="输出内容"></textarea>
+	</div>
+
+	<script type="text/javascript">
+
+$(function(){
+
+	$(".filter-div").click(function(){
+		var input_content = $('#input-content').val();
+		var exclude_content = $('#exclude-content').val();
+
+		var input_list = listFilter(input_content);
+		var exclude_list = listFilter(exclude_content);
+
+		console.info(input_list);
+		console.info(exclude_list);
+
+		var output_list = $.grep(input_list, function(value) {
+			return $.inArray(value, exclude_list) < 0;
+		});
+
+		//console.info(list);
+		
+		var output = output_list.join("\r\n");
+		$('#output-content').val(output);		
+
+	});	
+
+});
+
+function listFilter(content) {
+	var reg = /[^0-9]?[036][0-9]{5}[^0-9]?/g;
+	var arr = content.match(reg);
+
+	if (!  Array.isArray(arr)) return [];
+
+	var dict = {};
+	$.each(arr, function(i, val){
+		var t = val.replace(/[^0-9]/g, "");
+		t = 'p' + t;
+		dict[t] = 1;
+	});
+
+	var list = [];
+	$.each(dict, function(key, val){
+		var t = key.replace(/^p6/, "6");
+		t = t.replace(/^p0/, "0");
+		t = t.replace(/^p3/, "3");
+		list.push(t);
+	});
+	return list;
+}
+
+	</script>
+
+</body>
+</html>
