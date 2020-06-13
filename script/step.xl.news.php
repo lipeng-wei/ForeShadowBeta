@@ -35,7 +35,7 @@ class XLNewsStep
     {
         Log::easyInfo('Begin Update XLNews');
 
-        $limit = 1;
+        $limit = 6000;
 
         $cookie = TmpFile::genByName('step.xl.news.cookie');
         $cookie->renew(false);
@@ -70,7 +70,7 @@ class XLNewsStep
 
     public static function updateSingle($code, $name)
     {
-        $pattern = "/(融资|融券|大宗交易|日盘中跌幅|日盘中涨幅|龙虎榜|超大单流入|日快速反弹|日加速下跌|日快速上涨|日快速回调)/";
+        $pattern = "/(龙虎|涨停|跌停|大宗交易)/";
         $cookie = TmpFile::genByName('step.xl.news.cookie');
         $update_data = array();
         $url = $host = $refer = '';
@@ -84,7 +84,7 @@ class XLNewsStep
 
         //最多取58页
         $done = false;
-        for ($i=1;$i<3;$i++) {
+        for ($i=1;$i<58;$i++) {
 
             //http://vip.stock.finance.sina.com.cn/corp/go.php/vCB_AllNewsStock/symbol/sh600291.phtml
             //https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllNewsStock.php?symbol=sh603538&Page=3
