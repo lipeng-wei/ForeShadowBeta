@@ -13,10 +13,12 @@ class StockData
     const T_DC_REPORT = 'dcreport';
     //东财公告
     const T_DC_PUBLIC = 'dcpublic';
-    //东财资讯 T_DC_NEWS
+    //东财资讯
     const T_DC_NEWS = 'dcnews';
     //爱查股DDE
     const T_ACG_DDE = 'acgdde';
+    //新浪资讯
+    const T_XL_NEWS = 'xlnews';
 
 
 
@@ -40,6 +42,10 @@ class StockData
         self::T_ACG_DDE => [
             'PATH' => 'acgdde',
             'NAME' => '爱查股DDE'
+        ],
+        self::T_XL_NEWS => [
+            'PATH' => 'xlnews',
+            'NAME' => '新浪资讯'
         ],
     ];
 
