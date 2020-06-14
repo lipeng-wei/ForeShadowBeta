@@ -101,6 +101,7 @@ class XLNewsStep
 
             Log::easyInfo("Curl ", $url);
             $ret = self::fetchSinglePage($url, $host, $refer, $cookie->getFileName());
+            if (empty($ret)) break;
 
             $data = self::parseHtml($ret);
             if (empty($data)) {
