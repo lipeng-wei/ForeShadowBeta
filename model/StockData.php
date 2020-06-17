@@ -19,7 +19,8 @@ class StockData
     const T_ACG_DDE = 'acgdde';
     //新浪资讯
     const T_XL_NEWS = 'xlnews';
-
+    //金融界资讯
+    const T_JRJ_NEWS = 'jrjnews';
 
 
     public static $TYPE_CONF = [
@@ -46,6 +47,10 @@ class StockData
         self::T_XL_NEWS => [
             'PATH' => 'xlnews',
             'NAME' => '新浪资讯'
+        ],
+        self::T_JRJ_NEWS => [
+            'PATH' => 'jrjnews',
+            'NAME' => '金融界资讯'
         ],
     ];
 
