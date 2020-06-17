@@ -57,7 +57,7 @@ class XLNewsStep
 
         $rows = Refer::getStock();
         foreach($rows as $row) {
-            //if ($row['code']<='sz300408') continue;
+            //if ($row['code']<='sz000570') continue;
             if ($limit-- < 0) break;
 
             self::updateSingle($row['code'], $row['name']);
@@ -177,8 +177,8 @@ class XLNewsStep
     public static function fetchSinglePage($url, $host=null, $referer=null, $cookieFile=null) {
         $retry = 6;
         while ($retry-- > 0) {
-            $ret = self::curlSinglePage($url, $host, $referer, $cookieFile);
-            $ret = iconv('GB2312', 'UTF-8//IGNORE', $ret);
+            $res = self::curlSinglePage($url, $host, $referer, $cookieFile);
+            $ret = iconv('GB2312', 'UTF-8//IGNORE', $res);
             if ( $ret ){
                 $html = str_get_html($ret);
                 if ( $html){
@@ -189,11 +189,11 @@ class XLNewsStep
                         return $html;
                     }
                 }
-                if (strpos('已被新浪安全部门封禁',$ret) != false) {
-                    Log::easyDebug("已被新浪安全部门封禁 sleep 200s then retry");
-                    $retry ++;
-                    sleep(200);
-                }
+            }
+            if (strpos($res, '已被新浪安全部门封禁') != false) {
+                Log::easyDebug("已被新浪安全部门封禁 sleep 200s then retry");
+                $retry ++;
+                sleep(200);
             }
             Util::failedSleep();
         }
