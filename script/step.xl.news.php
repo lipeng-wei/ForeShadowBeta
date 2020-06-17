@@ -77,7 +77,7 @@ class XLNewsStep
         $xln = StockData::genByCodeType($code, StockData::T_XL_NEWS);
         $t = $xln->getLastSolo(0);
         $last_time = date("Y-m-d H:i:s", strtotime('-6 month'));
-        if($t && $t['time'] && $t['time']>$last_time) $last_time = $t['time'];
+        if($t && $t['in_time'] && $t['in_time']>$last_time) $last_time = $t['in_time'];
         //echo '$last_time', $last_time;
 
         Log::easyInfo("Begin", $code, $name);

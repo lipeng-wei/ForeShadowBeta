@@ -73,7 +73,7 @@ class JRJNewsStep
         $jrjn = StockData::genByCodeType($code, StockData::T_JRJ_NEWS);
         $t = $jrjn->getLastSolo(0);
         $last_time = date("Y-m-d H:i:s", strtotime('-1 year'));
-        if($t && $t['time'] && $t['time']>$last_time) $last_time = $t['time'];
+        if($t && $t['in_time'] && $t['in_time']>$last_time) $last_time = $t['in_time'];
         //echo '$last_time', $last_time;
 
         Log::easyInfo("Begin", $code, $name);
