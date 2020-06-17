@@ -191,9 +191,9 @@ class XLNewsStep
                 }
             }
             if (strpos($res, '已被新浪安全部门封禁') != false) {
-                Log::easyDebug("已被新浪安全部门封禁 sleep 200s then retry");
+                Log::easyDebug("已被新浪安全部门封禁 sleep 200s then retry", $url);
                 $retry ++;
-                sleep(200);
+                sleep(180);
             }
             Util::failedSleep();
         }
