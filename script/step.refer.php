@@ -73,8 +73,8 @@ class ReferStep
             if ($total && $t_page * $t_ps >= $total) break;
         }
         if (!empty($list)) {
-            //var_dump($list);
             ksort($list);
+            //var_dump($list);
             $referFile = TmpFile::genByFilePath(DATA_PATH . 'refer/Stock.json');
             $referFile->renew();
             $content = json_encode($list, JSON_UNESCAPED_UNICODE);
@@ -98,6 +98,7 @@ class ReferStep
             $reu = explode(',', $row);
 
             //code
+            if (substr($reu[1],0,2) == '68') continue; //去除科创板
             $code = Util::num2Code($reu[1]);
             $res['code'] = Util::num2Code($reu[1]);
 
