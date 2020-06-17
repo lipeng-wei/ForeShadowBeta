@@ -4,6 +4,8 @@
  * 挖掘有 新浪资讯利好 任务
  */
 
+ini_set('memory_limit', '800M');
+
 if ($argc > 0 && basename($argv[0]) == 'task.xl.news.grow.php') {
     require_once(dirname(__FILE__). '/../require.php');
     // 同一时间同一机器不允许执行多个
@@ -24,17 +26,38 @@ class XLGrow
 
     public static function run()
     {
+//        $pattern = array(
+//            array(
+//                "/(不可限量|高景气|超预期|爆发|暴增|历史性|机遇期|大时代)/" // AND
+//            ), array(  // OR
+//                "/(增|翻)/",  // AND
+//                "/(倍|番|[0-9]{3,}\.?[0-9]*%|[^0-9\.][5-9][0-9]\.?[0-9]*%)/"
+//            )
+//        );
+//        if (preg_match("/(倍|番|[0-9]{3,}\.?[0-9]*%|[^0-9\.][5-9][0-9]\.?[0-9]*%)/", '增长12.63%')){
+//            echo "yes";
+//        } else {
+//            echo "no";
+//        }
 
-        self::filterNews('2020-06-07', '2020-06-01', '2020-03-01');
+
+        self::filterNews('2020-06-14', '2020-02-01');
 
     }
 
     /**
-     * 开始时间$start 结束时间$end 展现时间$show
+     * 开始时间$start 结束时间$end
      */
-    public static function filterNews($end, $start, $show)
+    public static function filterNews($end, $start)
     {
-        $pattern = "/(不可限量|高景气|翻倍|翻番|加速|超预期|大幅增长|高速增长|高增长|爆发|迅猛增长|暴增|收获期|放量|快速增长|历史性|机遇期|大时代)/";
+        $pattern = array(
+            array(
+                "/(不可限量|高景气|超预期|爆发|暴增|历史性|机遇期|大时代)/" // AND
+            ), array(  // OR
+                "/(增|翻)/",  // AND
+                "/(倍|番|[0-9]{3,}\.?[0-9]*%|[^0-9\.][5-9][0-9]\.?[0-9]*%)/u"
+            )
+        );
         $replacement = "<span class='sp'>$1</span>";
         $resultFile = OUTPUT_PATH. $end. '_'. $start. '_XLNews_Growth.html';
         $title_content = 'XL_News 资讯筛选 ('. $start. '~'. $end. ')';
@@ -91,29 +114,43 @@ class XLGrow
             if (--$limiter < 0 ) break;
 
             $stkBlock = array();
-
+            Log::easyDebug('handle', $stk['code'], $stk['name']);
             $xlnd = StockData::genByCodeType($stk['code'], StockData::T_XL_NEWS);
-            $xlndd = $xlnd->getDayPeriod($show, $end);
+            $xlndd = $xlnd->getDayPeriod($start, $end);
             if (! $xlndd) continue;
 
             $is_select = false;
             foreach ($xlndd as $nddr) {
-                $stkRow = array();
-                $stkRow[] = $stk['code'].'_'.$stk['name'];
-                $stkRow[] = $nddr['time'];
-                if ($nddr['time'] >= $start && $nddr['time'] <= $end) {
-                    if (preg_match($pattern, $nddr['title'])){
-                        $is_select = true;
-                        $stkRow[] = preg_replace($pattern, $replacement, $nddr['title']);
-                    } else {
-                        $stkRow[] = $nddr['title'];
-                    }
 
-                } else {
-                    $stkRow[] = $nddr['title'];
+                $stkRow = array();
+                $is_or_ok = false;
+                foreach ($pattern as $p_row) {
+                    $is_and_ok = true;
+                    foreach ($p_row as $p_node) {
+                        if (! preg_match($p_node, $nddr['title'])){
+                            $is_and_ok = false;
+                            break;
+                        }
+                    }
+                    if ($is_and_ok) {
+                        $is_or_ok = true;
+                        break;
+                    }
                 }
-                $stkRow[] = '<a target="_blank" href="' . $nddr['url']. '">打开</a>';
-                array_unshift($stkBlock, $stkRow);
+                if ($is_or_ok){
+                    $is_select = true;
+                    foreach ($pattern as $p_row) {
+                        foreach ($p_row as $p_node) {
+                            $nddr['title'] = preg_replace($p_node, $replacement, $nddr['title']);
+                        }
+                    }
+                    $stkRow[] = $stk['code'].'_'.$stk['name'];
+                    $stkRow[] = $nddr['time'];
+                    $stkRow[] = $nddr['title'];
+                    $stkRow[] = '<a target="_blank" href="' . $nddr['url']. '">打开</a>';
+                    array_unshift($stkBlock, $stkRow);
+                }
+
             }
             if ($is_select) {
                 $stkD = array_merge($stkD, $stkBlock);
