@@ -112,7 +112,7 @@ class XLNewsStep
 
             foreach ($data as $row) {
 
-                if ($row['in_time'] < $last_time) {
+                if ($row['in_time'] <= $last_time) {
                     $done = true;
                     break;
                 }
