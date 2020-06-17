@@ -189,6 +189,11 @@ class XLNewsStep
                         return $html;
                     }
                 }
+                if (strpos('已被新浪安全部门封禁',$ret) != false) {
+                    Log::easyDebug("已被新浪安全部门封禁 sleep 200s then retry");
+                    $retry ++;
+                    sleep(200);
+                }
             }
             Util::failedSleep();
         }
