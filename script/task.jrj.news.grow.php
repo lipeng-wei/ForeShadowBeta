@@ -26,7 +26,8 @@ class JRJGrow
 
     public static function run()
     {
-        self::filterNews('2020-06-14', '2020-01-01');
+        //self::filterNews('2020-06-14', '2020-01-01');
+        self::filterNews('2020-06-21', '2020-06-14');
 
     }
 
