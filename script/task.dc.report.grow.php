@@ -71,7 +71,6 @@ class DCGrow
 <caption>%%caption%%</caption>
 <thead>
 <tr class="thead_tr">
-<th>代码</th>
 <th>名称</th>
 <th>日期</th>
 <th>机构</th>
@@ -124,7 +123,7 @@ class DCGrow
                 }
                 $stkRow[] = '<a target="_blank" href="' . $rddr['url']. '">打开</a>';
                 $stkRow[] = '<a target="_blank" href="http://stock.jrj.com.cn/share,'.
-                    Util::code2Num(['code']).',stockyanbao.shtml">金融界</a>&nbsp;'.
+                    Util::code2Num($stk['code']).',stockyanbao.shtml">金融界</a>&nbsp;'.
                     '<a target="_blank" href="http://vip.stock.finance.sina.com.cn/q/go.php/vReport_List/kind/search/index.phtml?t1=2&symbol='.
                     $stk['code'].'">新浪</a>&nbsp;'.'<a target="_blank" href="http://yanbao.stock.hexun.com/yb_'.
                     Util::code2Num($stk['code']).'.shtml">和讯</a>&nbsp;'.
@@ -133,6 +132,11 @@ class DCGrow
                 array_unshift($stkBlock, $stkRow);
             }
             if ($is_select) {
+                $concept = Concept::getByCode($stk['code']);
+                if ($concept) {
+                    $stkRow = array($stk['code'].'_'.$stk['name'],'','',$concept['board'],'','');
+                    array_unshift($stkBlock, $stkRow);
+                }
                 $stkD = array_merge($stkD, $stkBlock);
             }
 

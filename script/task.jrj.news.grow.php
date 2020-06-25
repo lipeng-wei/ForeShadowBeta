@@ -27,7 +27,7 @@ class JRJGrow
     public static function run()
     {
         //self::filterNews('2020-06-14', '2020-01-01');
-        self::filterNews('2020-06-21', '2020-06-14');
+        self::filterNews('2020-06-21', '2020-01-01');
 
     }
 
@@ -73,7 +73,6 @@ class JRJGrow
 <caption>%%caption%%</caption>
 <thead>
 <tr class="thead_tr">
-<th>代码</th>
 <th>名称</th>
 <th>日期</th>
 <th>标题</th>
@@ -139,6 +138,11 @@ class JRJGrow
 
             }
             if ($is_select) {
+                $concept = Concept::getByCode($stk['code']);
+                if ($concept) {
+                    $stkRow = array($stk['code'].'_'.$stk['name'],'',$concept['board'],'');
+                    array_unshift($stkBlock, $stkRow);
+                }
                 $stkD = array_merge($stkD, $stkBlock);
             }
 
