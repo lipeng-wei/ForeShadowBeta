@@ -1,6 +1,9 @@
 <?php
 /**
  *  stock concept
+ *
+ * board 板块
+ * detail 概念详情 暂时无数据
  */
 
 class Concept
