@@ -15,11 +15,15 @@ if ($argc > 0 && basename($argv[0]) == 'tmp.cat.refer.php') {
     Log::info(basename($argv[0]) . ' 开始运行');
 
 
-    $refer = Refer::getStock();
-    //Log::easyinfo($refer);
-    foreach ($refer as $k => $v) {
-        echo "$k : ( {$v['code']} , {$v['name']} )\n";
-    }
+//    $refer = Refer::getStock();
+//    foreach ($refer as $k => $v) {
+//        echo "$k : ( {$v['code']} , {$v['name']} )\n";
+//    }
+
+//    $concept = Concept::getConcept();
+//    foreach ($concept as $k => $v) {
+//        echo "$k : (  {$v['board']} )\n";
+//    }
 
     Log::info(basename($argv[0]) . ' 运行结束');
 }

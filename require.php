@@ -55,6 +55,7 @@ set_exception_handler(function ($exception) {
 
 require_once(MODEL_PATH . "StockData.php");
 require_once(MODEL_PATH . "Refer.php");
+require_once(MODEL_PATH . "Concept.php");
 
 
 
