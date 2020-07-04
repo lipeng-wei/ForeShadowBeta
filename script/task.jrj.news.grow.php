@@ -27,8 +27,8 @@ class JRJGrow
     public static function run()
     {
         //self::filterNews('2020-06-14', '2020-01-01');
-        self::filterNews('2020-06-21', '2020-01-01');
-
+        //self::filterNews('2020-06-27', '2020-03-01');
+        self::filterNews('2020-07-05', '2020-06-28');
     }
 
     /**
@@ -44,7 +44,12 @@ class JRJGrow
                 "/(倍|番|[0-9]{3,}\.?[0-9]*[%％]|[^0-9\.][5-9][0-9]\.?[0-9]*[%％])/u"
             )
         );
-        $replacement = "<span class='sp'>$1</span>";
+//        $pattern = array(
+//            array(
+//                "/(二季度|半年).*利.*(增|翻).*(倍|番|[0-9]{3,}\.?[0-9]*[%％]|[^0-9\.][5-9][0-9]\.?[0-9]*[%％])/u"
+//            )
+//        );
+        $replacement = "<span class='sp'>$0</span>";
         $resultFile = OUTPUT_PATH. $end. '_'. $start. '_JRJNews_Growth.html';
         $title_content = 'JRJ_News 资讯筛选 ('. $start. '~'. $end. ')';
         $caption_content = $start. '至'. $end. '资讯筛选结果';
