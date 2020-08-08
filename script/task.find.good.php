@@ -27,7 +27,8 @@ class FindGood
     public static function run()
     {
 
-        self::calcRange('2018-12-25', '2019-01-05', 5, 20);
+        //self::calcRange('2018-12-25', '2019-01-05', 5, 20);
+        self::calcRange('2020-07-01', '2020-08-09', 7, 60);
 
     }
 
