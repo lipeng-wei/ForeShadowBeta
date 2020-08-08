@@ -64,16 +64,21 @@ class DCReportStep
 
             $page++;
 
-            $t_rt = 50072929 + $page;
-            $t_var = "pUXlYkcE";
+            $b_day = date("Y-m-d", strtotime('-2 year'));
+            $e_day = date("Y-m-d", time());
+            $t_rt = time().rand(100, 999);
+            $t_cb = "datatable".rand(1000000, 9999999);
             $t_page = $page;
-            $url = "http://datainterface.eastmoney.com//EM_DataCenter/js.aspx?type=SR&sty=GGSR&js=var%20".$t_var.
-                "={%22data%22:[(x)],%22pages%22:%22(pc)%22,%22update%22:%22(ud)%22,%22count%22:%22(count)%22}&".
-                "ps=50&p=".$t_page."&mkt=0&stat=0&cmd=4&code=&rt=".$t_rt;
+
+            //https://reportapi.eastmoney.com/report/list?cb=datatable9766381&industryCode=*&pageSize=50&industry=*&rating=&ratingChange=&beginTime=2018-08-08&endTime=2020-08-08&pageNo=3&fields=&qType=0&orgCode=&code=*&rcode=&p=3&_=1596885891228
+            $url = "https://reportapi.eastmoney.com/report/list?cb=" . $t_cb
+                . "&industryCode=*&pageSize=50&industry=*&rating=&ratingChange=&beginTime=" . $b_day
+                . "&endTime=" . $e_day . "&pageNo=" . $t_page . "&fields=&qType=0&orgCode=&code=*&rcode=&p=" . $t_page
+                . "&_=" . $t_rt;
 
             Log::easyDebug('Get page', $t_page);
             Log::easyDebug('Get Url', $url);
-            $ret = self::fetchSinglePage($url, 'datainterface.eastmoney.com', 'http://data.eastmoney.com/report/',
+            $ret = self::fetchSinglePage($url, 'reportapi.eastmoney.com', 'http://data.eastmoney.com/report/stock.jshtml',
                 $cookie->getFileName());
             $updata = self::parseReport($ret['data']);
             Log::easyDebug('Get data', $updata);
@@ -119,29 +124,29 @@ class DCReportStep
         foreach($json as $row){
 
             //code
-            $reu = $row['secuFullCode'];
+            $reu = $row['stockCode'];
             $reu = substr($reu,0,6);
             $code = Util::num2Code($reu);
 
 
             //time
-            $reu = $row['datetime'];
+            $reu = $row['publishDate'];
             $reu = substr($reu,0,10);
             $res['time'] = $reu;
 
             //rate
-            $reu = $row['sratingName'];
+            $reu = $row['emRatingName'];
             $res['rate'] = $reu;
 
             //change
-            $reu = $row['change'];
+            $reu = $row['sRatingName'];
             $res['change'] = $reu;
 
             //aim
             $res['aim'] = 0;
 
             //institute
-            $reu = $row['insName'];
+            $reu = $row['orgSName'];
             $res['institute'] = $reu;
 
             //title
@@ -149,9 +154,8 @@ class DCReportStep
             $res['title'] = $reu;
 
             //url
-            $reu = $res['time'];
-            $reu = str_replace("-", "", $reu);
-            $reu = 'http://data.eastmoney.com/report/'.$reu.'/'.$row['infoCode'].'.html';
+            $reu = $row['encodeUrl'];
+            $reu = 'http://data.eastmoney.com/report/zw_stock.jshtml?encodeUrl='.$reu;
             $res['url'] = $reu;
 
             array_unshift($ret , array($code, $res));
@@ -159,6 +163,24 @@ class DCReportStep
         }
         //var_dump($ret);
         return $ret;
+    }
+
+    public static function fetchSinglePage($url, $host=null, $referer=null, $cookieFile=null) {
+        $retry = 18;
+        while ($retry-- > 0) {
+            $ret = self::curlSinglePage($url, $host, $referer, $cookieFile);
+            if ( $ret ){
+                $content = substr($ret, 17);
+                $content = substr($content, 0, -1);
+                $json = json_decode($content, true);
+                if ($json['size']) {
+                    Util::successSleep();
+                    return $json;
+                }
+            }
+            Util::failedSleep();
+        }
+        return false;
     }
 
     public static function curlSinglePage($url, $host, $referer = null, $cookieFile = null){
@@ -199,24 +221,6 @@ class DCReportStep
         //释放curl句柄
         curl_close($ch);
         return $contents;
-    }
-
-    public static function fetchSinglePage($url, $host=null, $referer=null, $cookieFile=null) {
-        $retry = 18;
-        while ($retry-- > 0) {
-            $ret = self::curlSinglePage($url, $host, $referer, $cookieFile);
-            if ( $ret ){
-                $t = strpos($ret, '=');
-                $content = substr($ret, $t + 1);
-                $json = json_decode($content, true);
-                if ($json) {
-                    Util::successSleep();
-                    return $json;
-                }
-            }
-            Util::failedSleep();
-        }
-        return false;
     }
 
 }
