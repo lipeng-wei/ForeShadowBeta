@@ -4,7 +4,7 @@
  * 在一段时间内 dde飘红比例
  */
 
-if ($argc > 0 && basename($argv[0]) == 'task.dde.php') {
+if ($argc > 0 && basename($argv[0]) == 'task.dde_percent.php') {
     require_once(dirname(__FILE__). '/../require.php');
     // 同一时间同一机器不允许执行多个
     $file = fopen(__FILE__, "a");
@@ -14,12 +14,12 @@ if ($argc > 0 && basename($argv[0]) == 'task.dde.php') {
     }
     Log::info(basename($argv[0]) . ' 开始运行');
 
-    DDE::run();
+    DDE_PERCENT::run();
 
     Log::info(basename($argv[0]) . ' 运行结束');
 }
 
-class DDE
+class DDE_PERCENT
 {
     public static function run()
     {
@@ -43,7 +43,7 @@ class DDE
      */
     public static function calcDDE($start, $end)
     {
-        $resultFile = OUTPUT_PATH. $end. '_'. $start. '_DDE.html';
+        $resultFile = OUTPUT_PATH. $end. '_'. $start. '_DDE_PERCENT.html';
         $title_content = 'DDE 筛选 ('. $start. '~'. $end. ')';
         $caption_content = $start. '至'. $end. '日线DDE筛选结果';
         $resultContent = '
