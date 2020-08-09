@@ -63,14 +63,48 @@ class DDE_PERCENT
     .sp {font-weight:bold; color:#FF0000}
 -->
 </style>
+<script type="text/javascript">
+
+window.onload = function () {
+    document.getElementById("selectAll").onclick = function() {
+	    var checkBoxObject = document.getElementsByName("sss");
+	    for (var i = 0; i < checkBoxObject.length; i++) {
+	        checkBoxObject[i].checked = true;
+	    }
+	};
+	document.getElementById("unSelectAll").onclick = function() {
+	    var checkBoxObject = document.getElementsByName("sss");
+	    for (var i = 0; i < checkBoxObject.length; i++) {
+	        checkBoxObject[i].checked = false;
+	    }
+	};
+	document.getElementById("selectCopy").onclick = function() {
+	    var checkBoxObject = document.getElementsByName("sss");
+	    var sssText = " ";
+	    for (var i = 0; i < checkBoxObject.length; i++) {
+	    	//console.info(checkBoxObject[i].value);
+	    	if (checkBoxObject[i].checked) {
+	    		sssText = sssText + "\n" + checkBoxObject[i].value;
+	    	}
+	    }
+	    var flag = copyText(sssText);
+	};
+}
+</script>
 </head>
 <body>
 <table cellspacing="1" cellpadding="2">
 <caption>%%caption%%</caption>
 <thead>
+<tr>
+	<input type="button" id="selectAll" value="全选">
+    <input type="button" id="unSelectAll" value="全不选">
+    <input type="button" id="selectCopy" value="获取">
+</tr>
 <tr class="thead_tr">
+<th>勾选</th>
 <th>编号</th>
-<th>代码</th>
+<th>名称</th>
 <th>DDE</th>
 <th>DDE_%</th>
 <th>DDE_day</th>
@@ -83,6 +117,37 @@ class DDE_PERCENT
 
 </tbody>
 </table>
+<script type="text/javascript">
+function copyText(text) {
+	//创建input对象
+    var textarea = document.createElement("textarea");
+    //当前获得焦点的元素
+    var currentFocus = document.activeElement;
+    //将文本框插入到NewsToolBox这个之后
+    var toolBoxwrap = document.getElementById("NewsToolBox");
+    //添加元素
+    toolBoxwrap.appendChild(textarea);
+    textarea.value = text;
+    textarea.focus();
+    if (textarea.setSelectionRange) {
+    	//获取光标起始位置到结束位置
+        textarea.setSelectionRange(0, textarea.value.length);
+    } else {
+        textarea.select();
+    }
+    try {
+    	//执行复制
+        var flag = document.execCommand("copy");
+    } catch (eo) {
+        var flag = false;
+    }
+    //删除元素
+    toolBoxwrap.removeChild(textarea);
+    currentFocus.focus();
+    return flag;
+}
+</script>
+<div id="NewsToolBox"></div>
 </body>
 </html>
 
@@ -137,12 +202,13 @@ class DDE_PERCENT
         $table_content = '';
         foreach($stkD as $stkR) {
             $i ++;
-            $table_content .= '<tr class="tr_'. ($i%2). '">';
+            $table_content .= "\n".'<tr class="tr_'. ($i%2). '">';
+            $table_content .= '<td><input type="checkbox" name="sss" value="'.$stkR['name'].'"></td>';
             $table_content .= '<td>'. $i. '</td>';
             foreach ($stkR as $item) {
                 $table_content .= '<td>'. $item. '</td>';
             }
-            $table_content .= '</'. 'tr>';
+            $table_content .= '</'. 'tr>'."\n";
         }
 
         $resultContent = str_replace("%%title%%", $title_content, $resultContent);
