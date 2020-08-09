@@ -94,7 +94,7 @@ class DDE_CONTINUE
             $l_dde = 0;
             foreach($dd as $d) {
                 if ($d['ddx'] >= 0) $s_dde ++;
-                if ($d['ddx'] < -0.1) $s_dde = 0;
+                if ($d['ddx'] < -0.02) $s_dde = 0;
                 if ($s_dde >= $l_dde) $l_dde = $s_dde;
             }
             if ($l_dde < $times) continue;
@@ -117,7 +117,7 @@ class DDE_CONTINUE
             foreach ($stkR as $item) {
                 $table_content .= '<td>'. $item. '</td>';
             }
-            $table_content .= '</'. 'tr>';
+            $table_content .= '</'. 'tr>'."\n";
         }
 
         $resultContent = str_replace("%%title%%", $title_content, $resultContent);
