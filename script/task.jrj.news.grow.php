@@ -28,7 +28,9 @@ class JRJGrow
     {
         //self::filterNews('2020-06-14', '2020-01-01');
         //self::filterNews('2020-06-27', '2020-03-01');
-        self::filterNews('2020-08-02', '2020-06-27');
+
+        //self::filterNews('2020-08-16', '2020-04-01');
+        self::filterNews('2020-08-16', '2020-08-01');
     }
 
     /**
@@ -36,21 +38,21 @@ class JRJGrow
      */
     public static function filterNews($end, $start)
     {
-//        $pattern = array(
-//            array(
-//                "/(不可限量|高景气|超预期|爆发|暴增|历史性|机遇期|大时代|低估值)/" // AND
-//            ), array(  // OR
-//                "/(增|翻)/",  // AND
-//                "/(倍|番|[0-9]{3,}\.?[0-9]*[%％]|[^0-9\.][5-9][0-9]\.?[0-9]*[%％])/u"
-//            )
-//        );
         $pattern = array(
             array(
-                "/(二季度|半年).*利.*(增|翻).*(倍|番|[0-9]{3,}\.?[0-9]*[%％]|[^0-9\.][5-9][0-9]\.?[0-9]*[%％])/u"
+                "/(不可限量|高景气|超预期|爆发|暴增|历史性|机遇期|大时代|低估值)/" // AND
+            ), array(  // OR
+                "/(增|翻)/",  // AND
+                "/(倍|番|[0-9]{3,}\.?[0-9]*[%％]|[^0-9\.][5-9][0-9]\.?[0-9]*[%％])/u"
             )
         );
+//        $pattern = array(
+//            array(
+//                "/(二季度|半年).*利.*(增|翻).*(倍|番|[0-9]{3,}\.?[0-9]*[%％]|[^0-9\.][5-9][0-9]\.?[0-9]*[%％])/u"
+//            )
+//        );
         $replacement = "<span class='sp'>$0</span>";
-        $resultFile = OUTPUT_PATH. $end. '_'. $start. '_JRJNews_GrowthQ2.html';
+        $resultFile = OUTPUT_PATH. $end. '_'. $start. '_JRJNews_Growth.html';
         $title_content = 'JRJ_News 资讯筛选 ('. $start. '~'. $end. ')';
         $caption_content = $start. '至'. $end. '资讯筛选结果';
         $resultContent = '
