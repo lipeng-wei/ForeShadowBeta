@@ -4,7 +4,7 @@
  * 在一段时间内 dde飘红比例
  */
 
-if ($argc > 0 && basename($argv[0]) == 'task.dde_percent.php') {
+if ($argc > 0 && basename($argv[0]) == 'task.dde.percent.php') {
     require_once(dirname(__FILE__). '/../require.php');
     // 同一时间同一机器不允许执行多个
     $file = fopen(__FILE__, "a");
@@ -34,7 +34,8 @@ class DDE_PERCENT
         //self::calcDDE('2020-07-05', '2020-07-12');
         //self::calcDDE('2020-07-12', '2020-07-19');
         //self::calcDDE('2020-07-19', '2020-07-26');
-        self::calcDDE('2020-08-01', '2020-08-09');
+        //self::calcDDE('2020-08-01', '2020-08-09');
+        self::calcDDE('2020-08-08', '2020-08-16');
 
     }
 
