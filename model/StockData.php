@@ -166,7 +166,8 @@ class StockData
         $this->_prepare();
 
         $d = $this->_locateDayIndex($day);
-        return $d[0] ? $this->_data[$d[1]]: false;
+        //return $d[0] ? $this->_data[$d[1]]: false;
+        return $this->_data[$d[1]];
     }
 
     /**
