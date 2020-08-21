@@ -24,6 +24,18 @@ body{
 	height: 600px;
 	margin:0 auto;
 }
+.main-list {
+	background: #000;
+	color: #fff;
+	padding:100px 10px 100px 100px;
+}
+.main-list p {
+	font-size: 28px;
+}
+.main-list p span{
+	filter:blur(5px);
+ 	font-size: 36px;
+}
 .w100{
 	width: 100%;
 }
@@ -71,6 +83,9 @@ body{
 		<div class="filter-div">=</div>
 		<textarea name="output-content" id="output-content" class="textarea w30" placeholder="输出内容"></textarea>
 	</div>
+	<div class="main-list w30">
+
+	</div>
 
 	<script type="text/javascript">
 
@@ -83,8 +98,8 @@ $(function(){
 		var input_list = listFilter(input_content);
 		var exclude_list = listFilter(exclude_content);
 
-		console.info(input_list);
-		console.info(exclude_list);
+		//console.info(input_list);
+		//console.info(exclude_list);
 
 		var output_list = $.grep(input_list, function(value) {
 			return $.inArray(value, exclude_list) < 0;
@@ -93,24 +108,42 @@ $(function(){
 		//console.info(list);
 		
 		var output = output_list.join("\r\n");
-		$('#output-content').val(output);		
+		$('#output-content').val(output);
+
+		output = "";
+		for (var i = 0; i < output_list.length; i++) {
+			output += '<p><span>股票代码</span></p><p>' + output_list[i] + '</p>';
+		}
+		$('.main-list').html(output);
 
 	});	
 
 });
 
 function listFilter(content) {
-	var reg = /[^0-9]?[036][0-9]{5}[^0-9]?/g;
+	var reg = /[^0-9]+[036][0-9]{5}[^0-9]+/g;
 	var arr = content.match(reg);
-
-	if (!  Array.isArray(arr)) return [];
-
 	var dict = {};
-	$.each(arr, function(i, val){
-		var t = val.replace(/[^0-9]/g, "");
-		t = 'p' + t;
-		dict[t] = 1;
-	});
+
+	//console.info(arr);
+	if (Array.isArray(arr)) {
+		$.each(arr, function(i, val){
+			var t = val.replace(/[^0-9]/g, "");
+			t = 'p' + t;
+			dict[t] = 1;
+		});
+	}
+
+	reg = /^[01][036][0-9]{5}$/mg;
+	arr = content.match(reg);
+	//console.info(arr);
+	if (Array.isArray(arr)) {
+		$.each(arr, function(i, val){
+			var t = val.replace(/^[01]/, "");
+			t = 'p' + t;
+			dict[t] = 1;
+		});
+	}
 
 	var list = [];
 	$.each(dict, function(key, val){
