@@ -8,7 +8,7 @@
 	<title>Stock Simple -- Lipeng_wei</title>
 	<style type="text/css">
 
- *{
+*{
 	padding: 0;
 	margin:0;
 	box-sizing: border-box;
@@ -23,18 +23,6 @@ body{
 	width: 1000px;
 	height: 600px;
 	margin:0 auto;
-}
-.main-list {
-	background: #000;
-	color: #fff;
-	padding:100px 10px 100px 100px;
-}
-.main-list p {
-	font-size: 28px;
-}
-.main-list p span{
-	filter:blur(5px);
- 	font-size: 36px;
 }
 .w100{
 	width: 100%;
@@ -83,9 +71,6 @@ body{
 		<div class="filter-div">=</div>
 		<textarea name="output-content" id="output-content" class="textarea w30" placeholder="输出内容"></textarea>
 	</div>
-	<div class="main-list w30">
-
-	</div>
 
 	<script type="text/javascript">
 
@@ -110,11 +95,21 @@ $(function(){
 		var output = output_list.join("\r\n");
 		$('#output-content').val(output);
 
-		output = "";
+		/*
+		 * 暂时不需要使用了
+		 *
+		output = "<!DOCTYPE html><html><head></head><body style='background:#000;color:#fff;margin:0;padding:10px 30px;'>";
 		for (var i = 0; i < output_list.length; i++) {
-			output += '<p><span>股票代码</span></p><p>' + output_list[i] + '</p>';
+			output += "<p style='filter:blur(5px);font-size: 36px;margin:0;padding:0'>国国国国</p>"
+					+ "<p style='font-size: 26px;margin:0;padding:0'>" + output_list[i] + "</p>"
+					+ "<hr color=#222 size=1>";
 		}
-		$('.main-list').html(output);
+		output += "</body></html>";
+		var x=window.open();
+		x.document.open();
+		x.document.write(output);
+		x.document.close();
+		*/
 
 	});	
 
@@ -126,6 +121,7 @@ function listFilter(content) {
 	var dict = {};
 
 	//console.info(arr);
+	// 支持全文查找
 	if (Array.isArray(arr)) {
 		$.each(arr, function(i, val){
 			var t = val.replace(/[^0-9]/g, "");
@@ -134,7 +130,8 @@ function listFilter(content) {
 		});
 	}
 
-	reg = /^[01][036][0-9]{5}$/mg;
+	// 支持EBK格式按行查找
+	reg = /^(00|03|16)[0-9]{5}$/mg;
 	arr = content.match(reg);
 	//console.info(arr);
 	if (Array.isArray(arr)) {
