@@ -36,7 +36,8 @@ class DCGrow
         //self::filterReport('2020-06-28', '2020-06-21', '2020-03-01');
         //self::filterReport('2020-07-05', '2020-06-28', '2020-03-01');
         //self::filterReport('2020-08-08', '2020-07-08', '2020-03-01');
-        self::filterReport('2020-08-16', '2020-08-08', '2020-06-01');
+        //self::filterReport('2020-08-16', '2020-08-08', '2020-06-01');
+        self::filterReport('2020-11-23', '2020-09-01', '2020-07-01');
 
     }
 
@@ -45,7 +46,7 @@ class DCGrow
      */
     public static function filterReport($end, $start, $show)
     {
-        $pattern = "/(不可限量|高景气|翻倍|翻番|加速|超预期|大幅增长|高速增长|高增长|爆发|迅猛增长|暴增|收获期|放量|快速增长|历史性|机遇期|大时代)/";
+        $pattern = "/(不可限量|高景气|翻倍|翻番|超预期|大幅增长|高速增长|高增长|爆发|迅猛增长|暴增|收获期|历史性|机遇期|大时代|低估值|估值修复|洼地)/";
         $replacement = "<span class='sp'>$1</span>";
         $resultFile = OUTPUT_PATH. $end. '_'. $start. '_DCReport_Growth.html';
         $title_content = 'DC_Report 研报筛选 ('. $start. '~'. $end. ')';
