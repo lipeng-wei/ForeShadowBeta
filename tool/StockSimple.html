@@ -116,7 +116,7 @@ $(function(){
 });
 
 function listFilter(content) {
-	var reg = /[^0-9]+[036][0-9]{5}[^0-9]+/g;
+	var reg = /[^0-9]+[036]0[0-9]{4}[^0-9]+/g;
 	var arr = content.match(reg);
 	var dict = {};
 
@@ -131,7 +131,7 @@ function listFilter(content) {
 	}
 
 	// 支持EBK格式按行查找
-	reg = /^(00|03|16)[0-9]{5}$/mg;
+	reg = /^(00|03|16)0[0-9]{4}$/mg;
 	arr = content.match(reg);
 	//console.info(arr);
 	if (Array.isArray(arr)) {
