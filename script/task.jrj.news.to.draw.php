@@ -26,9 +26,7 @@ class JRJDraw
 
     public static function run()
     {
-        //self::filterNews('2020-06-30', '2020-04-01', '2020-03-23');
-        //self::filterNews('2020-09-30', '2020-07-01', '2020-06-23');
-        self::filterNews('2020-11-23', '2020-10-01', '2020-09-21');
+        self::filterNews('2021-02-20', '2020-11-01', '2020-12-29');
     }
 
     /**
@@ -36,7 +34,7 @@ class JRJDraw
      */
     public static function filterNews($end, $start, $pos)
     {
-        $pattern = "/(三季度|Q3).*利.*(增|翻).*(倍|番|[0-9]{3,}\.?[0-9]*[%％]|[^0-9\.][5-9][0-9]\.?[0-9]*[%％])/u";
+        $pattern = "/(四季度|Q4|2020年).*利.*(增|翻).*(倍|番|[0-9]{3,}\.?[0-9]*[%％]|[^0-9\.][5-9][0-9]\.?[0-9]*[%％])/u";
         $limiter = 6000;
         $pos_time = date("Ymd", strtotime($pos));
         $resultFile = OUTPUT_PATH. $end. '_'. $start. '_JRJNews_TdxLineX.eld';

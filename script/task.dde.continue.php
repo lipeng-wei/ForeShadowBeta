@@ -24,9 +24,7 @@ class DDE_CONTINUE
     public static function run()
     {
 
-        //self::calcDDE('2020-07-09', '2020-08-09', 5);
-        //self::calcDDE('2020-08-01', '2020-08-16', 5);
-        self::calcDDE('2020-11-07', '2020-11-23', 5);
+        self::calcDDE('2020-12-07', '2020-12-18', 5);
 
     }
 
