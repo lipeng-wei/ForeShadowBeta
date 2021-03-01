@@ -8,151 +8,151 @@
 	<title>Stock Simple -- Lipeng_wei</title>
 	<style type="text/css">
 
-*{
-	padding: 0;
-	margin:0;
-	box-sizing: border-box;
-	font-family: "微软雅黑";
-}
+		*{
+			padding: 0;
+			margin:0;
+			box-sizing: border-box;
+			font-family: "微软雅黑";
+		}
 
-body{
-	padding: 20px;
-	font-size: 12px;
-}
-.main-body{
-	width: 1000px;
-	height: 600px;
-	margin:0 auto;
-}
-.w100{
-	width: 100%;
-}
-.w70{
-	width: 70%;
-}
-.w30{
- width: 30%;
-}
-.w20{
-	width: 20%;
-}
-.filter-div, .exclude-div{
-	float: left;	
-	width: auto;	
-	height: 100%;
-	font-size: 28px;
-	padding: 0 8px;
-	border-radius: 5px;
-	border:0;
-	background: #18f;
-	color: #fff;
-	cursor: pointer;
-	text-align: center;
-	display: flex;
-    align-items: center;
-}
-.textarea{
-	float: left;
-	height: 100%;
-	border: 1px solid #e0e0e0;
-	border-radius: 5px;
-	padding: 10px;
-	font-size: 14px;
-}
+		body{
+			padding: 20px;
+			font-size: 12px;
+		}
+		.main-body{
+			width: 1000px;
+			height: 600px;
+			margin:0 auto;
+		}
+		.w100{
+			width: 100%;
+		}
+		.w70{
+			width: 70%;
+		}
+		.w30{
+			width: 30%;
+		}
+		.w20{
+			width: 20%;
+		}
+		.filter-div, .exclude-div{
+			float: left;
+			width: auto;
+			height: 100%;
+			font-size: 28px;
+			padding: 0 8px;
+			border-radius: 5px;
+			border:0;
+			background: #18f;
+			color: #fff;
+			cursor: pointer;
+			text-align: center;
+			display: flex;
+			align-items: center;
+		}
+		.textarea{
+			float: left;
+			height: 100%;
+			border: 1px solid #e0e0e0;
+			border-radius: 5px;
+			padding: 10px;
+			font-size: 14px;
+		}
 
-	</style> 
+	</style>
 	<script src="https://cdn.staticfile.org/jquery/1.11.3/jquery.min.js"></script>
 </head>
 <body>
-	<div class="main-body">
-		<textarea name="input-content" id="input-content" class="textarea w30" placeholder="输入内容"></textarea>
-		<div class="exclude-div">-</div>
-		<textarea name="exclude-content" id="exclude-content" class="textarea w30" placeholder="排除内容"></textarea>
-		<div class="filter-div">=</div>
-		<textarea name="output-content" id="output-content" class="textarea w30" placeholder="输出内容"></textarea>
-	</div>
+<div class="main-body">
+	<textarea name="input-content" id="input-content" class="textarea w30" placeholder="输入内容"></textarea>
+	<div class="exclude-div">-</div>
+	<textarea name="exclude-content" id="exclude-content" class="textarea w30" placeholder="排除内容"></textarea>
+	<div class="filter-div">=</div>
+	<textarea name="output-content" id="output-content" class="textarea w30" placeholder="输出内容"></textarea>
+</div>
 
-	<script type="text/javascript">
+<script type="text/javascript">
 
-$(function(){
+	$(function(){
 
-	$(".filter-div").click(function(){
-		var input_content = $('#input-content').val();
-		var exclude_content = $('#exclude-content').val();
+		$(".filter-div").click(function(){
+			var input_content = $('#input-content').val();
+			var exclude_content = $('#exclude-content').val();
 
-		var input_list = listFilter(input_content);
-		var exclude_list = listFilter(exclude_content);
+			var input_list = listFilter(input_content);
+			var exclude_list = listFilter(exclude_content);
 
-		//console.info(input_list);
-		//console.info(exclude_list);
+			//console.info(input_list);
+			//console.info(exclude_list);
 
-		var output_list = $.grep(input_list, function(value) {
-			return $.inArray(value, exclude_list) < 0;
+			var output_list = $.grep(input_list, function(value) {
+				return $.inArray(value, exclude_list) < 0;
+			});
+
+			//console.info(list);
+
+			var output = output_list.join("\r\n");
+			$('#output-content').val(output);
+
+			/*
+			 * 暂时不需要使用了
+			 *
+			 output = "<!DOCTYPE html><html><head></head><body style='background:#000;color:#fff;margin:0;padding:10px 30px;'>";
+			 for (var i = 0; i < output_list.length; i++) {
+			 output += "<p style='filter:blur(5px);font-size: 36px;margin:0;padding:0'>国国国国</p>"
+			 + "<p style='font-size: 26px;margin:0;padding:0'>" + output_list[i] + "</p>"
+			 + "<hr color=#222 size=1>";
+			 }
+			 output += "</body></html>";
+			 var x=window.open();
+			 x.document.open();
+			 x.document.write(output);
+			 x.document.close();
+			 */
+
 		});
 
-		//console.info(list);
-		
-		var output = output_list.join("\r\n");
-		$('#output-content').val(output);
-
-		/*
-		 * 暂时不需要使用了
-		 *
-		output = "<!DOCTYPE html><html><head></head><body style='background:#000;color:#fff;margin:0;padding:10px 30px;'>";
-		for (var i = 0; i < output_list.length; i++) {
-			output += "<p style='filter:blur(5px);font-size: 36px;margin:0;padding:0'>国国国国</p>"
-					+ "<p style='font-size: 26px;margin:0;padding:0'>" + output_list[i] + "</p>"
-					+ "<hr color=#222 size=1>";
-		}
-		output += "</body></html>";
-		var x=window.open();
-		x.document.open();
-		x.document.write(output);
-		x.document.close();
-		*/
-
-	});	
-
-});
-
-function listFilter(content) {
-	var reg = /[^0-9]+[036]0[0-9]{4}[^0-9]+/g;
-	var arr = content.match(reg);
-	var dict = {};
-
-	//console.info(arr);
-	// 支持全文查找
-	if (Array.isArray(arr)) {
-		$.each(arr, function(i, val){
-			var t = val.replace(/[^0-9]/g, "");
-			t = 'p' + t;
-			dict[t] = 1;
-		});
-	}
-
-	// 支持EBK格式按行查找
-	reg = /^(00|03|16)0[0-9]{4}$/mg;
-	arr = content.match(reg);
-	//console.info(arr);
-	if (Array.isArray(arr)) {
-		$.each(arr, function(i, val){
-			var t = val.replace(/^[01]/, "");
-			t = 'p' + t;
-			dict[t] = 1;
-		});
-	}
-
-	var list = [];
-	$.each(dict, function(key, val){
-		var t = key.replace(/^p6/, "6");
-		t = t.replace(/^p0/, "0");
-		t = t.replace(/^p3/, "3");
-		list.push(t);
 	});
-	return list;
-}
 
-	</script>
+	function listFilter(content) {
+		var reg = /([^0-9]|^)[036]0[0-9]{4}($|[^0-9])/mg;
+		var arr = content.match(reg);
+		var dict = {};
+
+		//console.info(arr);
+		// 支持全文查找
+		if (Array.isArray(arr)) {
+			$.each(arr, function(i, val){
+				var t = val.replace(/[^0-9]/g, "");
+				t = 'p' + t;
+				dict[t] = 1;
+			});
+		}
+
+		// 支持EBK格式按行查找
+		reg = /^(00|03|16)0[0-9]{4}$/mg;
+		arr = content.match(reg);
+		//console.info(arr);
+		if (Array.isArray(arr)) {
+			$.each(arr, function(i, val){
+				var t = val.replace(/^[01]/, "");
+				t = 'p' + t;
+				dict[t] = 1;
+			});
+		}
+
+		var list = [];
+		$.each(dict, function(key, val){
+			var t = key.replace(/^p6/, "6");
+			t = t.replace(/^p0/, "0");
+			t = t.replace(/^p3/, "3");
+			list.push(t);
+		});
+		return list;
+	}
+
+</script>
 
 </body>
 </html>
