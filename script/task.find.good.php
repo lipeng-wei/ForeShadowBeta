@@ -27,8 +27,7 @@ class FindGood
     public static function run()
     {
 
-        //self::calcRange('2018-12-25', '2019-01-05', 5, 20);
-        self::calcRange('2020-07-01', '2020-08-09', 7, 60);
+        self::calcRange('2020-09-14', '2020-09-22', 3, 20);
 
     }
 
@@ -37,9 +36,62 @@ class FindGood
      */
     public static function calcRange($start, $end, $n, $x)
     {
-        $resultFile = OUTPUT_PATH. $end. '_'. $start. '_FindGood.html';
-        $title_content = 'Find_Good 筛选 ('. $start. '~'. $end. ')';
-        $caption_content = $start. '至'. $end. '日线Find_Good筛选结果';
+
+        $fileLabel = $end. '_'. $start. '_FindGood';
+        $tableCaption = $end . 'FindGood筛选结果 ('. $start. '~'. $end. ')';
+        $tableHead = '<th>勾选</th><th>编号</th><th>代码</th><th>涨幅</th>';
+        $tableContent = '';
+
+        $limiter = 2;
+        $stkL = Refer::getStock();
+        $stkD = array();
+        foreach($stkL as $stk) {
+
+            //if (--$limiter < 0 ) break;
+
+            $kd = StockData::genByCodeType($stk['code'], StockData::T_K_DAY);
+            $dd = $kd->getAll();
+            if (count($dd) < 60) continue;
+            $dd = $kd->getDayPeriod($start, $end, $n - 1);
+            if (! $dd) continue;
+
+            $MaxRange = -2;
+            for ($i = 0; $i < count($dd); $i++){
+                $daySlice = array_slice($dd, $i, $n);
+                if (! $daySlice) continue;
+                $dMax = Logic::highValue($daySlice, 'close');
+                $dMin= $daySlice[0]['close'];
+                $dR = ceil(($dMax - $dMin) / $dMin * 100);
+                $MaxRange = $MaxRange < $dR ? $dR : $MaxRange;
+            }
+
+            if ($MaxRange < $x) continue;
+
+            $stkD []= [
+                'a' => $stk['code'].'_'.$stk['name'],
+                'b' => $MaxRange
+            ];
+        }
+        array_multisort(array_column($stkD,'b'), SORT_DESC, $stkD);
+
+        $i = 0;
+        foreach($stkD as $stkR) {
+            $i ++;
+            $tableContent .= "\n".'<tr class="tr_'. ($i%2). '">';
+            $tableContent .= '<td><input type="checkbox" name="sss" value="'.$stkR['a'].'"></td>';
+            $tableContent .= '<td>'. $i. '</td>';
+            $tableContent .= '<td>'. $stkR['a']. '</td>';
+            $tableContent .= '<td>'. $stkR['b']. '</td>';
+            $tableContent .= '</'. 'tr>'."\n";
+        }
+
+        self::outputHtml($fileLabel, $tableCaption, $tableHead, $tableContent);
+
+    }
+
+    public static function outputHtml($fileLabel, $tableCaption, $tableHead, $tableContent)
+    {
+        $resultFile = OUTPUT_PATH. $fileLabel. '.html';
         $resultContent = '
 
 <!DOCTYPE html>
@@ -96,10 +148,9 @@ window.onload = function () {
     <input type="button" id="selectCopy" value="获取">
 </tr>
 <tr class="thead_tr">
-<th>勾选</th>
-<th>编号</th>
-<th>代码</th>
-<th>涨幅</th>
+
+%%head%%
+
 </tr>
 </thead>
 <tbody>
@@ -143,55 +194,12 @@ function copyText(text) {
 </html>
 
         ';
-        $limiter = 2;
 
-        $stkL = Refer::getStock();
-        $stkD = array();
-        foreach($stkL as $stk) {
-
-            //if (--$limiter < 0 ) break;
-
-            $kd = StockData::genByCodeType($stk['code'], StockData::T_K_DAY);
-            $dd = $kd->getAll();
-            if (count($dd) < 60) continue;
-            $dd = $kd->getDayPeriod($start, $end, $n - 1);
-            if (! $dd) continue;
-
-            $MaxRange = -2;
-            for ($i = 0; $i < $n / 2; $i++){
-                $daySlice = array_slice($dd, $i, $n);
-                if (! $daySlice) continue;
-                $dMax = Logic::highValue($daySlice, 'close');
-                $dMin= $daySlice[0]['close'];
-                $dR = ceil(($dMax - $dMin) / $dMin * 100);
-                $MaxRange = $MaxRange < $dR ? $dR : $MaxRange;
-            }
-
-            if ($MaxRange < $x) continue;
-
-            $stkD []= [
-                'a' => $stk['code'].'_'.$stk['name'],
-                'b' => $MaxRange
-            ];
-        }
-        array_multisort(array_column($stkD,'b'), SORT_DESC, $stkD);
-
-        $i = 0;
-        $table_content = '';
-        foreach($stkD as $stkR) {
-            $i ++;
-            $table_content .= "\n".'<tr class="tr_'. ($i%2). '">';
-            $table_content .= '<td><input type="checkbox" name="sss" value="'.$stkR['a'].'"></td>';
-            $table_content .= '<td>'. $i. '</td>';
-            $table_content .= '<td>'. $stkR['a']. '</td>';
-            $table_content .= '<td>'. $stkR['b']. '</td>';
-            $table_content .= '</'. 'tr>'."\n";
-        }
-
-        $resultContent = str_replace("%%title%%", $title_content, $resultContent);
-        $resultContent = str_replace("%%caption%%", $caption_content, $resultContent);
-        $resultContent = str_replace("%%table%%", $table_content, $resultContent);
+        $resultContent = str_replace("%%title%%", $tableCaption, $resultContent);
+        $resultContent = str_replace("%%caption%%", $tableCaption, $resultContent);
+        $resultContent = str_replace("%%head%%", $tableHead, $resultContent);
+        $resultContent = str_replace("%%table%%", $tableContent, $resultContent);
         file_put_contents($resultFile, $resultContent);
-
     }
+
 }
