@@ -27,7 +27,7 @@ class FindGood
     public static function run()
     {
 
-        self::calcRange('2020-09-14', '2020-09-22', 3, 20);
+        self::calcRange('2020-09-21', '2020-09-29', 3, 20);
 
     }
 

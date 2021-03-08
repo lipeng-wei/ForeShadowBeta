@@ -34,7 +34,7 @@ class JRJDraw
      */
     public static function filterNews($end, $start, $pos)
     {
-        $pattern = "/(四季度|Q4|2020年).*利.*(增|翻).*(倍|番|[0-9]{3,}\.?[0-9]*[%％]|[^0-9\.][5-9][0-9]\.?[0-9]*[%％])/u";
+        $pattern = "/(2020年|年度).*利.*(增|翻).*(倍|番|[0-9]{3,}\.?[0-9]*[%％]|[^0-9\.][5-9][0-9]\.?[0-9]*[%％])/u";
         $limiter = 6000;
         $pos_time = date("Ymd", strtotime($pos));
         $resultFile = OUTPUT_PATH. $end. '_'. $start. '_JRJNews_TdxLineX.eld';
