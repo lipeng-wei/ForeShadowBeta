@@ -26,8 +26,66 @@ class FindNeed
 
     public static function run()
     {
-        self::findSlowUp('2020-09-06', '2021-03-06', 10, 33);
+        //self::findSlowUp('2020-09-06', '2021-03-06', 10, 33);
+        self::findDropDown('2020-12-01', '2021-02-01', 50);
 
+    }
+
+    /**
+     * 查找：开始时间$start 结束时间$end 跌幅超过$x(%)
+     */
+    public static function findDropDown($start, $end, $x)
+    {
+        $fileLabel = $end. '_'. $start. '_DropDown';
+        $tableCaption = $end . 'DropDown筛选结果 ('. $start. '~'. $end. ')';
+        $tableHead = '<th>勾选</th><th>编号</th><th>代码</th><th>跌幅</th>';
+        $tableContent = '';
+
+
+        $limiter = 2;
+        $stkL = Refer::getStock();
+        $stkD = array();
+        foreach($stkL as $stk) {
+
+            //if (--$limiter < 0 ) break;
+
+            $kd = StockData::genByCodeType($stk['code'], StockData::T_K_DAY);
+            $dd = $kd->getAll();
+            if (count($dd) < 60) continue;
+            $dd = $kd->getDayPeriod($start, $end);
+            if (! $dd) continue;
+
+            $MaxRange = -2;
+            for ($i = 0; $i < count($dd); $i++){
+                $daySlice = array_slice($dd, $i);
+                if (! $daySlice) continue;
+                $dLow = Logic::lowValue($daySlice, 'close');
+                $dHigh = $daySlice[0]['close'];
+                $dR = 100 - ceil($dLow / $dHigh * 100);
+                $MaxRange = $MaxRange < $dR ? $dR : $MaxRange;
+            }
+
+            if ($MaxRange < $x) continue;
+
+            $stkD []= [
+                'a' => $stk['code'].'_'.$stk['name'],
+                'b' => $MaxRange
+            ];
+        }
+        array_multisort(array_column($stkD,'b'), SORT_DESC, $stkD);
+
+        $i = 0;
+        foreach($stkD as $stkR) {
+            $i ++;
+            $tableContent .= "\n".'<tr class="tr_'. ($i%2). '">';
+            $tableContent .= '<td><input type="checkbox" name="sss" value="'.$stkR['a'].'"></td>';
+            $tableContent .= '<td>'. $i. '</td>';
+            $tableContent .= '<td>'. $stkR['a']. '</td>';
+            $tableContent .= '<td>'. $stkR['b']. '</td>';
+            $tableContent .= '</'. 'tr>'."\n";
+        }
+
+        self::outputHtml($fileLabel, $tableCaption, $tableHead, $tableContent);
     }
 
     /**
